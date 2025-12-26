@@ -9,7 +9,7 @@ import { ProductService } from "../services/product.service";
 import { ProductController } from "../controllers/product.controller";
 import { authenticate } from "../middleware/auth.validation";
 import { upload } from "../middleware/upload.validation";
-import prismaInstance from "../prisma";
+import prismaInstance from "../database";
 
 const router = Router();
 

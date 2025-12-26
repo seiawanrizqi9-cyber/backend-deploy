@@ -10,7 +10,7 @@ import { validate } from "../utils/validation";
 import { OrderService } from "../services/order.service";
 import { OrderController } from "../controllers/order.controller";
 import { authenticate } from "../middleware/auth.validation";
-import prismaInstance from "../prisma";
+import prismaInstance from "../database";
 
 const router = Router();
 
@@ -305,7 +305,12 @@ router.get("/stats", authenticate, controller.getStats);
  *       Admin: Bisa melihat semua order
  *       User: Hanya bisa melihat order milik sendiri
  */
-router.get("/:id", authenticate, validate(getOrderByIdValidation), controller.getById);
+router.get(
+  "/:id",
+  authenticate,
+  validate(getOrderByIdValidation),
+  controller.getById
+);
 
 /**
  * @swagger
@@ -340,7 +345,12 @@ router.get("/:id", authenticate, validate(getOrderByIdValidation), controller.ge
  *       401:
  *         description: Tidak terautentikasi
  */
-router.post("/", authenticate, validate(createOrderValidation), controller.create);
+router.post(
+  "/",
+  authenticate,
+  validate(createOrderValidation),
+  controller.create
+);
 
 /**
  * @swagger
@@ -378,7 +388,12 @@ router.post("/", authenticate, validate(createOrderValidation), controller.creat
  *       User ID diambil otomatis dari JWT token
  *       Stok produk akan otomatis berkurang
  */
-router.post("/checkout", authenticate, validate(checkoutValidation), controller.checkout);
+router.post(
+  "/checkout",
+  authenticate,
+  validate(checkoutValidation),
+  controller.checkout
+);
 
 /**
  * @swagger
@@ -424,7 +439,12 @@ router.post("/checkout", authenticate, validate(checkoutValidation), controller.
  *       404:
  *         description: Order tidak ditemukan
  */
-router.put("/:id", authenticate, validate(updateOrderValidation), controller.update);
+router.put(
+  "/:id",
+  authenticate,
+  validate(updateOrderValidation),
+  controller.update
+);
 
 /**
  * @swagger
@@ -465,6 +485,11 @@ router.put("/:id", authenticate, validate(updateOrderValidation), controller.upd
  *       Admin: Bisa menghapus semua order
  *       User: Hanya bisa menghapus order milik sendiri
  */
-router.delete("/:id", authenticate, validate(getOrderByIdValidation), controller.delete);
+router.delete(
+  "/:id",
+  authenticate,
+  validate(getOrderByIdValidation),
+  controller.delete
+);
 
 export default router;

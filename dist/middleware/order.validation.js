@@ -26,4 +26,16 @@ export const updateOrderValidation = [
         .isNumeric().withMessage("Total harus angka").toFloat()
         .custom(value => value >= 0).withMessage("Total tidak boleh negatif"),
 ];
+export const checkoutValidation = [
+    body("orderItems")
+        .isArray({ min: 1 }).withMessage("Order items harus berupa array minimal 1 item"),
+    body("orderItems.*.product_id")
+        .isNumeric().withMessage("Product ID harus angka")
+        .toInt()
+        .custom(value => value > 0).withMessage("Product ID harus lebih dari 0"),
+    body("orderItems.*.quantity")
+        .isNumeric().withMessage("Quantity harus angka")
+        .toInt()
+        .custom(value => value > 0).withMessage("Quantity harus lebih dari 0"),
+];
 //# sourceMappingURL=order.validation.js.map

@@ -1,6 +1,6 @@
-import { successResponse, errorResponse } from "../utils/response";
+import { successResponse, errorResponse } from "../utils/response.js";
 // import { MagicLoginService } from "../services/magicLogin.service";
-import { MockMagicLoginService } from "../services/mockMagicLogin.service";
+import { MockMagicLoginService } from "../services/mockMagicLogin.service.js";
 // const magicService = new MagicLoginService();
 const magicService = new MockMagicLoginService();
 export const requestMagicLink = async (req, res) => {

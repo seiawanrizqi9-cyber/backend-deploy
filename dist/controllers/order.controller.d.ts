@@ -1,17 +1,23 @@
 import type { Request, Response } from "express";
-export interface orderRequest extends Request {
-    user_id: number;
-    total: number;
-    orderItems: orderItem[];
+import type { IOrderService } from "../services/order.service.js";
+export interface IOrderController {
+    list: (req: Request, res: Response) => Promise<void>;
+    getById: (req: Request, res: Response) => Promise<void>;
+    create: (req: Request, res: Response) => Promise<void>;
+    update: (req: Request, res: Response) => Promise<void>;
+    delete: (req: Request, res: Response) => Promise<void>;
+    checkout: (req: Request, res: Response) => Promise<void>;
+    getStats: (req: Request, res: Response) => Promise<void>;
 }
-export interface orderItem {
-    product_id: number;
-    quantity: number;
+export declare class OrderController implements IOrderController {
+    private orderService;
+    constructor(orderService: IOrderService);
+    list(req: Request, res: Response): Promise<void>;
+    getById(req: Request, res: Response): Promise<void>;
+    create(req: Request, res: Response): Promise<void>;
+    update(req: Request, res: Response): Promise<void>;
+    delete(req: Request, res: Response): Promise<void>;
+    checkout(req: Request, res: Response): Promise<void>;
+    getStats(_req: Request, res: Response): Promise<void>;
 }
-export declare const getAll: (_req: Request, res: Response) => Promise<void>;
-export declare const getById: (req: Request, res: Response) => Promise<void>;
-export declare const create: (req: Request, res: Response) => Promise<void>;
-export declare const update: (req: Request, res: Response) => Promise<void>;
-export declare const remove: (req: Request, res: Response) => Promise<void>;
-export declare const checkout: (req: Request, res: Response) => Promise<void>;
 //# sourceMappingURL=order.controller.d.ts.map

@@ -11,7 +11,7 @@ import {
   getProfileValidation,
   getUserProfileValidation,
 } from "../middleware/profile.validation";
-import prismaInstance from "../prisma";
+import prismaInstance from "../database";
 
 const router = Router();
 

@@ -1,7 +1,7 @@
 import * as runtime from "@prisma/client/runtime/client";
 import type * as Prisma from "../models";
-import { type PrismaClient } from "./class";
-export type * from '../models';
+import { type PrismaClient } from "./class.js";
+export type * from "../models";
 export type DMMF = typeof runtime.DMMF;
 export type PrismaPromise<T> = runtime.Types.Public.PrismaPromise<T>;
 /**
@@ -112,7 +112,7 @@ export type Subset<T, U> = {
  */
 export type SelectSubset<T, U> = {
     [key in keyof T]: key extends keyof U ? T[key] : never;
-} & (T extends SelectAndInclude ? 'Please either choose `select` or `include`.' : T extends SelectAndOmit ? 'Please either choose `select` or `omit`.' : {});
+} & (T extends SelectAndInclude ? "Please either choose `select` or `include`." : T extends SelectAndOmit ? "Please either choose `select` or `omit`." : {});
 /**
  * Subset + Intersection
  * @desc From `T` pick properties that exist in `U` and intersect `K`
@@ -194,7 +194,11 @@ export type Not<B extends Boolean> = {
     0: 1;
     1: 0;
 }[B];
-export type Extends<A1 extends any, A2 extends any> = [A1] extends [never] ? 0 : A1 extends A2 ? 1 : 0;
+export type Extends<A1 extends any, A2 extends any> = [
+    A1
+] extends [
+    never
+] ? 0 : A1 extends A2 ? 1 : 0;
 export type Has<U extends Union, U1 extends Union> = Not<Extends<Exclude<U1, U>, U1>>;
 export type Or<B1 extends Boolean, B2 extends Boolean> = {
     0: {
@@ -210,9 +214,9 @@ export type Keys<U extends Union> = U extends unknown ? keyof U : never;
 export type GetScalarType<T, O> = O extends object ? {
     [P in keyof T]: P extends keyof O ? O[P] : never;
 } : never;
-type FieldPaths<T, U = Omit<T, '_avg' | '_sum' | '_count' | '_min' | '_max'>> = IsObject<T> extends True ? U : T;
+type FieldPaths<T, U = Omit<T, "_avg" | "_sum" | "_count" | "_min" | "_max">> = IsObject<T> extends True ? U : T;
 export type GetHavingFields<T> = {
-    [K in keyof T]: Or<Or<Extends<'OR', K>, Extends<'AND', K>>, Extends<'NOT', K>> extends True ? T[K] extends infer TK ? GetHavingFields<UnEnumerate<TK> extends object ? Merge<UnEnumerate<TK>> : never> : never : {} extends FieldPaths<T[K]> ? never : K;
+    [K in keyof T]: Or<Or<Extends<"OR", K>, Extends<"AND", K>>, Extends<"NOT", K>> extends True ? T[K] extends infer TK ? GetHavingFields<UnEnumerate<TK> extends object ? Merge<UnEnumerate<TK>> : never> : never : {} extends FieldPaths<T[K]> ? never : K;
 }[keyof T];
 /**
  * Convert tuple to union
@@ -241,7 +245,7 @@ export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export interface TypeMapCb<GlobalOmitOptions = {}> extends runtime.Types.Utils.Fn<{
     extArgs: runtime.Types.Extensions.InternalArgs;
 }, runtime.Types.Utils.Record<string, any>> {
-    returns: TypeMap<this['params']['extArgs'], GlobalOmitOptions>;
+    returns: TypeMap<this["params"]["extArgs"], GlobalOmitOptions>;
 }
 export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> = {
     globalOmitOptions: {
@@ -628,19 +632,31 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         payload: any;
         operations: {
             $executeRaw: {
-                args: [query: TemplateStringsArray | Sql, ...values: any[]];
+                args: [
+                    query: TemplateStringsArray | Sql,
+                    ...values: any[]
+                ];
                 result: any;
             };
             $executeRawUnsafe: {
-                args: [query: string, ...values: any[]];
+                args: [
+                    query: string,
+                    ...values: any[]
+                ];
                 result: any;
             };
             $queryRaw: {
-                args: [query: TemplateStringsArray | Sql, ...values: any[]];
+                args: [
+                    query: TemplateStringsArray | Sql,
+                    ...values: any[]
+                ];
                 result: any;
             };
             $queryRawUnsafe: {
-                args: [query: string, ...values: any[]];
+                args: [
+                    query: string,
+                    ...values: any[]
+                ];
                 result: any;
             };
         };
@@ -725,43 +741,43 @@ export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder];
 /**
  * Reference to a field of type 'Int'
  */
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>;
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, "Int">;
 /**
  * Reference to a field of type 'Int[]'
  */
-export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>;
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, "Int[]">;
 /**
  * Reference to a field of type 'String'
  */
-export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>;
+export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, "String">;
 /**
  * Reference to a field of type 'String[]'
  */
-export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>;
+export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, "String[]">;
 /**
  * Reference to a field of type 'DateTime'
  */
-export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>;
+export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, "DateTime">;
 /**
  * Reference to a field of type 'DateTime[]'
  */
-export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>;
+export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, "DateTime[]">;
 /**
  * Reference to a field of type 'Decimal'
  */
-export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>;
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, "Decimal">;
 /**
  * Reference to a field of type 'Decimal[]'
  */
-export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>;
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, "Decimal[]">;
 /**
  * Reference to a field of type 'Float'
  */
-export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>;
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, "Float">;
 /**
  * Reference to a field of type 'Float[]'
  */
-export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>;
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, "Float[]">;
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -770,7 +786,7 @@ export type BatchPayload = {
 };
 export declare const defineExtension: runtime.Types.Extensions.ExtendsHook<"define", TypeMapCb, runtime.Types.Extensions.DefaultArgs>;
 export type DefaultPrismaClient = PrismaClient;
-export type ErrorFormat = 'pretty' | 'colorless' | 'minimal';
+export type ErrorFormat = "pretty" | "colorless" | "minimal";
 export type PrismaClientOptions = ({
     /**
      * Instance of a Driver Adapter, e.g., like one provided by `@prisma/adapter-pg`.
@@ -862,13 +878,13 @@ export type GlobalOmitConfig = {
     product?: Prisma.ProductOmit;
     user?: Prisma.UserOmit;
 };
-export type LogLevel = 'info' | 'query' | 'warn' | 'error';
+export type LogLevel = "info" | "query" | "warn" | "error";
 export type LogDefinition = {
     level: LogLevel;
-    emit: 'stdout' | 'event';
+    emit: "stdout" | "event";
 };
 export type CheckIsLogLevel<T> = T extends LogLevel ? T : never;
-export type GetLogType<T> = CheckIsLogLevel<T extends LogDefinition ? T['level'] : T>;
+export type GetLogType<T> = CheckIsLogLevel<T extends LogDefinition ? T["level"] : T>;
 export type GetEvents<T extends any[]> = T extends Array<LogLevel | LogDefinition> ? GetLogType<T[number]> : never;
 export type QueryEvent = {
     timestamp: Date;
@@ -882,7 +898,7 @@ export type LogEvent = {
     message: string;
     target: string;
 };
-export type PrismaAction = 'findUnique' | 'findUniqueOrThrow' | 'findMany' | 'findFirst' | 'findFirstOrThrow' | 'create' | 'createMany' | 'createManyAndReturn' | 'update' | 'updateMany' | 'updateManyAndReturn' | 'upsert' | 'delete' | 'deleteMany' | 'executeRaw' | 'queryRaw' | 'aggregate' | 'count' | 'runCommandRaw' | 'findRaw' | 'groupBy';
+export type PrismaAction = "findUnique" | "findUniqueOrThrow" | "findMany" | "findFirst" | "findFirstOrThrow" | "create" | "createMany" | "createManyAndReturn" | "update" | "updateMany" | "updateManyAndReturn" | "upsert" | "delete" | "deleteMany" | "executeRaw" | "queryRaw" | "aggregate" | "count" | "runCommandRaw" | "findRaw" | "groupBy";
 /**
  * `PrismaClient` proxy available in interactive transactions.
  */

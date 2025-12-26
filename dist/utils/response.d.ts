@@ -3,6 +3,7 @@ export declare const successResponse: (res: Response, message: string, data?: un
     page: number;
     limit: number;
     total: number;
+    totalPages: number;
 } | null, statusCode?: number) => Response<any, Record<string, any>>;
 export declare const errorResponse: (res: Response, message: string, statusCode?: number, errors?: Array<{
     field: string;

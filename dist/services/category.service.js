@@ -1,33 +1,58 @@
-import { getPrisma } from "../prisma";
-const prisma = getPrisma();
-export const getAllCategories = async () => {
-    return await prisma.category.findMany();
-};
-export const getCategoryById = async (id) => {
-    const numId = parseInt(id);
-    return await prisma.category.findUnique({
-        where: { id: numId, deletedAt: null },
-    });
-};
-export const createCategory = async (name) => {
-    const isExist = await prisma.category.findUnique({ where: { name } });
-    if (isExist)
-        throw new Error("Nama kategori sudah ada");
-    return await prisma.category.create({
-        data: {
-            name,
-        },
-    });
-};
-export const categoryUpdate = async (id, name) => {
-    const numId = parseInt(id);
-    return await prisma.category.update({
-        where: { id: numId, deletedAt: null },
-        data: { name },
-    });
-};
-export const removeCategory = async (id) => {
-    const numId = parseInt(id);
-    return await prisma.category.delete({ where: { id: numId, deletedAt: null } });
-};
+export class CategoryService {
+    categoryRepo;
+    constructor(categoryRepo) {
+        this.categoryRepo = categoryRepo;
+    }
+    async list(params) {
+        const { page, limit, search, sortBy, sortOrder } = params;
+        const skip = (page - 1) * limit;
+        const whereClause = {};
+        if (search?.name) {
+            whereClause.name = {
+                contains: search.name,
+                mode: "insensitive",
+            };
+        }
+        const sortCriteria = sortBy
+            ? {
+                [sortBy]: sortOrder || "desc",
+            }
+            : { createdAt: "desc" };
+        const categories = await this.categoryRepo.list(skip, limit, whereClause, sortCriteria);
+        const total = await this.categoryRepo.countAll(whereClause);
+        return {
+            categories,
+            total,
+            totalPages: Math.ceil(total / limit),
+            currentPage: page,
+        };
+    }
+    ;
+    async getById(id) {
+        const numId = parseInt(id);
+        return await this.categoryRepo.findById(numId);
+    }
+    ;
+    async create(name) {
+        const isExist = await this.categoryRepo.findByName(name);
+        if (isExist)
+            throw new Error("Nama kategori sudah ada");
+        return await this.categoryRepo.create({ name });
+    }
+    ;
+    async update(id, name) {
+        const numId = parseInt(id);
+        return await this.categoryRepo.update(numId, { name });
+    }
+    ;
+    async delete(id) {
+        const numId = parseInt(id);
+        return await this.categoryRepo.delete(numId);
+    }
+    ;
+    async exec() {
+        const state = await this.categoryRepo.getStats();
+        return { overview: state };
+    }
+}
 //# sourceMappingURL=category.service.js.map

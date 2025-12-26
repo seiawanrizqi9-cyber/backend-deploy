@@ -1,5 +1,5 @@
 import { validationResult } from "express-validator";
-import { errorResponse } from "./response";
+import { errorResponse } from "./response.js";
 export const validate = (validations) => {
     return async (req, res, next) => {
         await Promise.all(validations.map(validation => validation.run(req)));
@@ -8,7 +8,7 @@ export const validate = (validations) => {
             return next();
         }
         const errorList = errors.array().map(err => ({
-            field: err.type === 'field' ? err.path : 'unknown',
+            field: err.type === "field" ? err.path : "unknown",
             message: err.msg
         }));
         return errorResponse(res, "Validasi gagal", 400, errorList);

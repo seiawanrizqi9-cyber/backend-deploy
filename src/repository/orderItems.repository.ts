@@ -95,11 +95,9 @@ export class OrderItemRepository implements IOrderItemRepository {
     });
   }
 
-  async findComplex(id: number, user_id: number) {
+  async findComplex(id: number, user_id: number): Promise<OrderItem[]> {
     return await this.prisma.orderItem.findMany({
-      where: {
-        OR: [{ id }, { user_id }],
-      },
+      where: { id, order: { user_id } },
     });
   }
 

@@ -1,22 +1,36 @@
-import { Prisma } from "../generated/client";
-import { errorResponse } from "../utils/response";
+import { errorResponse } from "../utils/response.js";
+import config from "../utils/env.js";
+import { Prisma } from "../generated/client.js";
 export const errorHandler = (err, _req, res, _next) => {
     console.error("ERROR:", err.message);
-    const statusCode = err.message.includes("tidak ditemukan") ? 404 : 400;
+    let statusCode = 500;
+    let message = err.message || "Terjadi kesalahan server";
+    let errors = null;
+    // Handle Prisma Errors
     if (err instanceof Prisma.PrismaClientKnownRequestError) {
+        statusCode = 400;
         if (err.code === "P2002") {
-            errorResponse(res, `Data sudah ada (Unique Constraint violation) \n ${err.message}`, statusCode, process.env.NODE_ENV === "development"
-                ? { stack: err.stack }
-                : null);
+            message = "Data sudah ada (Unique constraint violation)";
+            errors = [{ field: err.meta?.target?.join(", "), message: "Sudah terdaftar" }];
         }
-        if (err.code === "P2025") {
-            errorResponse(res, `Data tidak ditemukan \n${err.message}`, statusCode, process.env.NODE_ENV === "development"
-                ? { stack: err.stack }
-                : null);
+        else if (err.code === "P2025") {
+            statusCode = 404;
+            message = "Data tidak ditemukan";
         }
     }
-    errorResponse(res, err.message || "Terjadi kesalahan server", statusCode, process.env.NODE_ENV === "development"
+    // Handle Validation or Business Logic Errors
+    else if (statusCode === 500) {
+        if (message.includes("tidak ditemukan") || message.includes("not found")) {
+            statusCode = 404;
+        }
+        else if (message.includes("salah") || message.includes("invalid") || message.includes("sudah terdaftar")) {
+            statusCode = 400;
+        }
+    }
+    // Only show stack trace for status 500 in Development
+    const errorDetails = config.NODE_ENV === "development" && statusCode === 500
         ? { stack: err.stack }
-        : null);
+        : errors;
+    return errorResponse(res, message, statusCode, errorDetails);
 };
 //# sourceMappingURL=error.handler.js.map

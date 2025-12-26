@@ -1,6 +1,6 @@
 import * as runtime from "@prisma/client/runtime/client";
-import type * as Prisma from "./prismaNamespace";
-export type LogOptions<ClientOptions extends Prisma.PrismaClientOptions> = 'log' extends keyof ClientOptions ? ClientOptions['log'] extends Array<Prisma.LogLevel | Prisma.LogDefinition> ? Prisma.GetEvents<ClientOptions['log']> : never : never;
+import type * as Prisma from "./prismaNamespace.js";
+export type LogOptions<ClientOptions extends Prisma.PrismaClientOptions> = "log" extends keyof ClientOptions ? ClientOptions["log"] extends Array<Prisma.LogLevel | Prisma.LogDefinition> ? Prisma.GetEvents<ClientOptions["log"]> : never : never;
 export interface PrismaClientConstructor {
     /**
    * ## Prisma Client
@@ -15,9 +15,9 @@ export interface PrismaClientConstructor {
    *
    * Read more in our [docs](https://pris.ly/d/client).
    */
-    new <Options extends Prisma.PrismaClientOptions = Prisma.PrismaClientOptions, LogOpts extends LogOptions<Options> = LogOptions<Options>, OmitOpts extends Prisma.PrismaClientOptions['omit'] = Options extends {
+    new <Options extends Prisma.PrismaClientOptions = Prisma.PrismaClientOptions, LogOpts extends LogOptions<Options> = LogOptions<Options>, OmitOpts extends Prisma.PrismaClientOptions["omit"] = Options extends {
         omit: infer U;
-    } ? U : Prisma.PrismaClientOptions['omit'], ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs>(options: Prisma.Subset<Options, Prisma.PrismaClientOptions>): PrismaClient<LogOpts, OmitOpts, ExtArgs>;
+    } ? U : Prisma.PrismaClientOptions["omit"], ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs>(options: Prisma.Subset<Options, Prisma.PrismaClientOptions>): PrismaClient<LogOpts, OmitOpts, ExtArgs>;
 }
 /**
  * ## Prisma Client
@@ -32,11 +32,11 @@ export interface PrismaClientConstructor {
  *
  * Read more in our [docs](https://pris.ly/d/client).
  */
-export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out OmitOpts extends Prisma.PrismaClientOptions['omit'] = undefined, in out ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> {
+export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out OmitOpts extends Prisma.PrismaClientOptions["omit"] = undefined, in out ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> {
     [K: symbol]: {
-        types: Prisma.TypeMap<ExtArgs>['other'];
+        types: Prisma.TypeMap<ExtArgs>["other"];
     };
-    $on<V extends LogOpts>(eventType: V, callback: (event: V extends 'query' ? Prisma.QueryEvent : Prisma.LogEvent) => void): PrismaClient;
+    $on<V extends LogOpts>(eventType: V, callback: (event: V extends "query" ? Prisma.QueryEvent : Prisma.LogEvent) => void): PrismaClient;
     /**
      * Connect with the database
      */
@@ -100,7 +100,9 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
      *
      * Read more in our [docs](https://www.prisma.io/docs/concepts/components/prisma-client/transactions).
      */
-    $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P], options?: {
+    $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [
+        ...P
+    ], options?: {
         isolationLevel?: Prisma.TransactionIsolationLevel;
     }): runtime.Types.Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>;
     $transaction<R>(fn: (prisma: Omit<PrismaClient, runtime.ITXClientDenyList>) => runtime.Types.Utils.JsPromise<R>, options?: {

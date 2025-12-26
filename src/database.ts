@@ -1,7 +1,7 @@
 import {PrismaClient} from "./generated/client";
 import {Pool} from "pg";
-import {PrismaPg} from "../node_modules/@prisma/adapter-pg/dist/index";
 import config from './utils/env'
+import { PrismaPg } from "@prisma/adapter-pg";
 
 let prisma: PrismaClient;
 

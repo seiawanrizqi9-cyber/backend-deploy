@@ -9,7 +9,7 @@ import { validate } from "../utils/validation";
 import { OrderItemService } from "../services/orderItems.service";
 import { OrderItemController } from "../controllers/orderItems.controller";
 import { authenticate } from "../middleware/auth.validation";
-import prismaInstance from "../prisma";
+import prismaInstance from "../database";
 
 const router = Router();
 
@@ -267,7 +267,12 @@ router.get("/stats", authenticate, controller.getStats);
  *       Admin: Bisa melihat semua order items
  *       User: Hanya bisa melihat order items milik order sendiri
  */
-router.get("/:id", authenticate, validate(getOrderItemByIdValidation), controller.getById);
+router.get(
+  "/:id",
+  authenticate,
+  validate(getOrderItemByIdValidation),
+  controller.getById
+);
 
 /**
  * @swagger
@@ -304,7 +309,12 @@ router.get("/:id", authenticate, validate(getOrderItemByIdValidation), controlle
  *       404:
  *         description: Order atau produk tidak ditemukan
  */
-router.post("/", authenticate, validate(createOrderItemValidation), controller.create);
+router.post(
+  "/",
+  authenticate,
+  validate(createOrderItemValidation),
+  controller.create
+);
 
 /**
  * @swagger
@@ -351,7 +361,12 @@ router.post("/", authenticate, validate(createOrderItemValidation), controller.c
  *       Admin: Bisa mengupdate semua order items
  *       User: Hanya bisa mengupdate order items milik order sendiri
  */
-router.put("/:id", authenticate, validate(updateOrderItemValidation), controller.update);
+router.put(
+  "/:id",
+  authenticate,
+  validate(updateOrderItemValidation),
+  controller.update
+);
 
 /**
  * @swagger
@@ -390,6 +405,11 @@ router.put("/:id", authenticate, validate(updateOrderItemValidation), controller
  *       Admin: Bisa menghapus semua order items
  *       User: Hanya bisa menghapus order items milik order sendiri
  */
-router.delete("/:id", authenticate, validate(getOrderItemByIdValidation), controller.delete);
+router.delete(
+  "/:id",
+  authenticate,
+  validate(getOrderItemByIdValidation),
+  controller.delete
+);
 
 export default router;

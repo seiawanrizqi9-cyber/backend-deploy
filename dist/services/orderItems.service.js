@@ -1,46 +1,71 @@
-import { getPrisma } from "../prisma";
-const prisma = getPrisma();
-export const getAllOrderItems = async () => {
-    const orderItems = await prisma.orderItem.findMany({
-        include: { product: true, order: true },
-        where: { deletedAt: null },
-    });
-    const total = orderItems.length;
-    return { orderItems, total };
-};
-export const getOrderItemById = async (id) => {
-    const numId = parseInt(id);
-    const orderItem = await prisma.orderItem.findUnique({
-        where: { id: numId, deletedAt: null },
-        include: { product: true, order: true },
-    });
-    if (!orderItem) {
-        throw new Error("Order item tidak ditemukan");
+export class OrderItemService {
+    orderItemRepo;
+    constructor(orderItemRepo) {
+        this.orderItemRepo = orderItemRepo;
     }
-    return orderItem;
-};
-export const createOrderItem = async (data) => {
-    return await prisma.orderItem.create({
-        data: {
-            order_id: data.order_id,
-            product_id: data.product_id,
+    async list(params) {
+        const { page, limit, search, sortBy, sortOrder } = params;
+        const skip = (page - 1) * limit;
+        const whereClause = { deletedAt: null };
+        if (search?.order_id) {
+            whereClause.order_id = search.order_id;
+        }
+        if (search?.product_id) {
+            whereClause.product_id = search.product_id;
+        }
+        if (search?.min_quantity || search?.max_quantity) {
+            whereClause.quantity = {};
+            if (search?.min_quantity) {
+                whereClause.quantity.gte = search.min_quantity;
+            }
+            if (search?.max_quantity) {
+                whereClause.quantity.lte = search.max_quantity;
+            }
+        }
+        const sortCriteria = sortBy
+            ? {
+                [sortBy]: sortOrder || "desc",
+            }
+            : { createdAt: "desc" };
+        const orderItems = await this.orderItemRepo.list(skip, limit, whereClause, sortCriteria);
+        const total = await this.orderItemRepo.countAll(whereClause);
+        return {
+            orderItems,
+            total,
+            totalPages: Math.ceil(total / limit),
+            currentPage: page,
+        };
+    }
+    async getById(id) {
+        const numId = parseInt(id);
+        const orderItem = await this.orderItemRepo.findById(numId);
+        if (!orderItem) {
+            throw new Error("Order item tidak ditemukan");
+        }
+        return orderItem;
+    }
+    async create(data) {
+        const createData = {
+            order: { connect: { id: data.order_id } },
+            product: { connect: { id: data.product_id } },
             quantity: data.quantity,
-        },
-    });
-};
-export const updateOrderItem = async (id, data) => {
-    await getOrderItemById(id); // Sama seperti product service
-    const numId = parseInt(id);
-    return await prisma.orderItem.update({
-        where: { id: numId, deletedAt: null },
-        data,
-    });
-};
-export const deleteOrderItem = async (id) => {
-    const numId = parseInt(id);
-    return await prisma.orderItem.update({
-        where: { id: numId, deletedAt: null },
-        data: { deletedAt: new Date() },
-    });
-};
+        };
+        return await this.orderItemRepo.create(createData);
+    }
+    async update(id, data) {
+        // Periksa apakah order item ada
+        await this.getById(id);
+        const numId = parseInt(id);
+        return await this.orderItemRepo.update(numId, data);
+    }
+    async delete(id) {
+        const numId = parseInt(id);
+        return await this.orderItemRepo.softDelete(numId);
+    }
+    async exec() {
+        const state = await this.orderItemRepo.getStats();
+        const category = await this.orderItemRepo.getOrderItemsByOrder();
+        return { overview: state, byCategory: category };
+    }
+}
 //# sourceMappingURL=orderItems.service.js.map

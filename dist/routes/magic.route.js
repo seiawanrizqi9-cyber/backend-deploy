@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { requestMagicLink, verifyMagicToken, validateSession, getUserProfile, } from "../controllers/magicLogin.controller";
-import { requestMagicLinkValidation, verifyTokenValidation, validate, } from "../middleware/magic.validation";
+import { requestMagicLink, verifyMagicToken, validateSession, getUserProfile, } from "../controllers/magicLogin.controller.js";
+import { requestMagicLinkValidation, verifyTokenValidation, validate, } from "../middleware/magic.validation.js";
 const router = Router();
 // Public routes
 router.post("/request", validate(requestMagicLinkValidation), requestMagicLink);
