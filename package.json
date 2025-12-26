@@ -8,7 +8,7 @@
     "prisma:migrate": "prisma generate && prisma migrate dev",
     "prisma:reset": "prisma migrate reset",
     "seed": "tsx src/prisma/seeder.ts",
-    "dev": "tsx watch src/index.ts --env-file=.env.development src/index.ts",
+    "dev": "tsx watch src/index.ts",
     "start": "node dist/index.js --env-file=.env.production dist/index.js",
     "build": "tsc && ts-add-js-extension --dir=dist",
     "test": "jest"
