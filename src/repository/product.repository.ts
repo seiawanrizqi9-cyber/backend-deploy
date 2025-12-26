@@ -3,7 +3,7 @@ import type {
   Prisma,
   PrismaClient,
   Product,
-} from "../generated/client";
+} from "../generated";
 import type { Decimal } from "../generated/runtime/client";
 
 export interface CategoryStats {

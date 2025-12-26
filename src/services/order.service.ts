@@ -1,4 +1,4 @@
-import type { Prisma, Order, PrismaClient } from "../generated/client";
+import type { Prisma, Order, PrismaClient } from "../generated";
 import type { IOrderRepository } from "../repository/order.repository";
 
 interface FindAllParams {

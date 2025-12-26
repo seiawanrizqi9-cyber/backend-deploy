@@ -1,4 +1,4 @@
-import type { Prisma, Profile, PrismaClient } from "../generated/client";
+import type { Prisma, Profile, PrismaClient } from "../generated";
 import type { IProfileRepository } from "../repository/profile.repository";
 
 export interface CreateProfileData {

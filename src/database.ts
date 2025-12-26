@@ -1,4 +1,4 @@
-import {PrismaClient} from "./generated/client";
+import {PrismaClient} from "./generated";
 import {Pool} from "pg";
 import config from './utils/env'
 import { PrismaPg } from "@prisma/adapter-pg";

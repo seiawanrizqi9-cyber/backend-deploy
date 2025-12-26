@@ -1,4 +1,4 @@
-import type { Category, Prisma } from "../generated/client";
+import type { Category, Prisma } from "../generated";
 import type { ICategoryRepository } from "../repository/category.repository";
 
 interface FindAllParams {
